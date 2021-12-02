@@ -81,6 +81,13 @@ Averages_DF <- DF %>%
   summarise(across(.cols = everything(), mean)) %>% 
   ungroup()
 
+# ##############################################################
+# Writing out text file of summary variable for my submission
+# ##############################################################
+
+
+write.table(Averages_DF, 'C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/Averages_DF.txt', row.name=FALSE) 
+
 
 
 
