@@ -4,12 +4,18 @@ library(data.table)
 library(dplyr)
 library(stringr)
 
+# ###########################################
+# Set working directory
+# ###########################################
+
+setwd(getwd())
+
 # ##############################################################
 # Reading in activity descriptions and features from zipped folder (previously unzipped).
 # Cleaning up the features to create names that are more appropriate for train and test datasets
 # ##############################################################
 
-activity_description <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/activity_labels.txt',
+activity_description <- read.table('./UCI HAR Dataset/activity_labels.txt',
                                    col.names = c('activity','activity_description'))
 
 
@@ -35,14 +41,14 @@ keep_mean_std <- features[features_mean_std,][['label']]
 # Add test subjects
 # ##############################################################
 
-train <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/train/X_train.txt',
+train <- read.table('./UCI HAR Dataset/train/X_train.txt',
                     col.names = features[['label']])
 train <-train[,keep_mean_std]
 
 
-train_activity_labels <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/train/y_train.txt',
+train_activity_labels <- read.table('./UCI HAR Dataset/train/y_train.txt',
                                     col.names = c('activity'))
-train_subject <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/train/subject_train.txt',
+train_subject <- read.table('./UCI HAR Dataset/train/subject_train.txt',
                             col.names = c('test_subject'))
 train['activity'] = train_activity_labels[,'activity']
 train['test_subject'] = train_subject[,'test_subject']
@@ -50,13 +56,13 @@ train['dataset'] = 'train'
 
 
 
-test <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/test/X_test.txt',
+test <- read.table('./UCI HAR Dataset/test/X_test.txt',
                    col.names = features[['label']])
 test <-test[,keep_mean_std]
 
-test_activity_labels <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/test/y_test.txt',
+test_activity_labels <- read.table('./UCI HAR Dataset/test/y_test.txt',
                                    col.names = c('activity'))
-test_subject <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/test/subject_test.txt',
+test_subject <- read.table('./UCI HAR Dataset/test/subject_test.txt',
                            col.names = c('test_subject'))
 test['activity'] = test_activity_labels[,'activity']
 test['test_subject'] = test_subject[,'test_subject']
@@ -86,7 +92,7 @@ Averages_DF <- DF %>%
 # ##############################################################
 
 
-write.table(Averages_DF, 'C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/Averages_DF.txt', row.name=FALSE) 
+write.table(Averages_DF, './UCI HAR Dataset/Averages_DF.txt', row.name=FALSE) 
 
 
 
