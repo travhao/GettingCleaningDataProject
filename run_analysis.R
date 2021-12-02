@@ -92,7 +92,7 @@ Averages_DF <- DF %>%
 # ##############################################################
 
 
-write.table(Averages_DF, './UCI HAR Dataset/Averages_DF.txt', row.name=FALSE) 
+write.table(Averages_DF, './Averages_DF.txt', row.name=FALSE) 
 
 
 
