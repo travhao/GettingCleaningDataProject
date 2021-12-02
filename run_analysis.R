@@ -4,9 +4,14 @@ library(data.table)
 library(dplyr)
 library(stringr)
 
+# ##############################################################
+# Reading in activity descriptions and features from zipped folder (previously unzipped).
+# Cleaning up the features to create names that are more appropriate for train and test datasets
+# ##############################################################
 
 activity_description <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/activity_labels.txt',
                                    col.names = c('activity','activity_description'))
+
 
 
 features <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/features.txt') %>% 
@@ -15,11 +20,20 @@ features <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR
   mutate(label = str_replace_all(label,'\\-','.')) %>% 
   mutate(label = str_replace_all(label,',','.'))
 
+# ##############################################################
+# Create a vector of features to keep (mean and standard deviation)
+# ##############################################################
+
 features_mean_std <- grepl('mean|std',features[,'label'])
 
 keep_mean_std <- features[features_mean_std,][['label']]
 
-
+# ##############################################################
+# Reading in text train and test files from zipped folder (previously unzipped)
+# Select only variables related to mean and standard deviation
+# Label the activities
+# Add test subjects
+# ##############################################################
 
 train <- read.table('C:/Users/Helm/Desktop/GettingCleaningDataProject/UCI HAR Dataset/train/X_train.txt',
                     col.names = features[['label']])
@@ -48,10 +62,19 @@ test['activity'] = test_activity_labels[,'activity']
 test['test_subject'] = test_subject[,'test_subject']
 test['dataset'] = 'test'
 
+# ##############################################################
+# Join test and train datasets
+# ##############################################################
+
 DF <- rbind(train, test) %>% 
   left_join(activity_description, by = 'activity')
 
 rm(test, train)
+
+# ##############################################################
+# Create a dataset that averages all mean and standard deviation
+# variables by activity, test_subject, dataset and activity_description
+# ##############################################################
 
 Averages_DF <- DF %>% 
   group_by(activity, test_subject, dataset, activity_description) %>% 
